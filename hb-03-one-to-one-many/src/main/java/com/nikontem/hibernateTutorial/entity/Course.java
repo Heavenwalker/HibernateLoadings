@@ -2,6 +2,8 @@ package com.nikontem.hibernateTutorial.entity;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "course")
@@ -21,6 +23,12 @@ public class Course {
              CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="instructor_id")
     private Instructor instructor;
+
+
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private List<Review> reviews;
 
     public Course() {
     }
@@ -50,7 +58,13 @@ public class Course {
         return instructor;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
 
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
@@ -64,4 +78,17 @@ public class Course {
                 ", title='" + title + '\'' +
                 '}';
     }
+
+
+public void addReview(Review review){
+
+        if (reviews == null){
+            reviews = new ArrayList<>();
+        }
+        else{
+            reviews.add(review);
+        }
+}
+
+
 }
